@@ -44,7 +44,7 @@ int main()
   fout << "day" << "\t" << "hour" << "\t" << "temp" << "\n";
   int h;
   while(fin2 >> date >> h >> time >> prev){
-    fout << date << " " << h+1 << "\t" << ((9.0/5.0)*prev)+32 << "\n";
+    fout << date << "\t" << h+1 << "\t" << ((9.0/5.0)*prev)+32 << "\n";
   }
   cout << "output in: " << outfile << endl;
   return 0;
