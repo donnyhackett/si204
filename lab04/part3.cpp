@@ -14,7 +14,7 @@ int main()
   double avg, prev;
   double max = -99999999;
   double min = 99999999;
-  int count;
+  int count = 0;
   string temp, date, time, max_date, min_date;
   fin >> temp >> temp;
 
