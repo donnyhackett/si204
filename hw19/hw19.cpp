@@ -27,7 +27,7 @@ int main()
   // Read final temperature
   cout << "Final temperature: ";
   Tf = readT();
-
+  cout << Ti << Tf << endl;
   if(Tf < Ti)
   {
       swapped = 1;
