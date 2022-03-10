@@ -81,7 +81,7 @@ int* read(int& i)
     cin >> temp;
     if(temp != "N")
     {
-        ifstream fin("temp");
+        ifstream fin(temp);
         fin >> temp >> temp >> i >> temp;
         int* j = new int[i];
         for(int k = 0; k < i; k++)

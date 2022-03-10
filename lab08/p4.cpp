@@ -88,6 +88,7 @@ int* read(int& i)
         {
             fin >> j[k];
         }
+        return j;
     }
     else
     {
@@ -97,8 +98,8 @@ int* read(int& i)
         {
             cin >> j[k];
         }
+        return j;
     }
-    return j;
 }
 
 void command(int* i, int j, int& score, int& moves)
