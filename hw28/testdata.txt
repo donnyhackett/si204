@@ -1,0 +1,8 @@
+N = 7
+E pos -55.5 vel 8.3
+A pos -120.0 vel 22.5
+X pos 20.5 vel -14.0
+Y pos 80.0 vel -17.3
+C pos 7.0 vel 20.0
+M pos -5.5 vel -8.5
+T pos 0.5 vel 6.0
