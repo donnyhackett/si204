@@ -63,6 +63,22 @@ int main() {
         c = inputChar();
         erase(letters, N);
         randDir(letters, N);
+        if(c == 'a'){
+            letters[0].xvel = -1;
+            letters[0].yvel = 0;
+        }
+        if(c == 'w'){
+            letters[0].xvel = 0;
+            letters[0].yvel = -1;
+        }
+        if(c == 's'){
+            letters[0].xvel = 0;
+            letters[0].yvel = 1;
+        }
+        if(c == 'd'){
+            letters[0].xvel = 1;
+            letters[0].yvel = 0;
+        }
         edgeCheck(letters, N, height, width);
         moveChars(letters, N);
         drawAll(letters, N);
@@ -146,7 +162,7 @@ void giveAllVelocity(letter* letters, int N, int xvel, int yvel){
 }
 
 void randDir(letter* letters, int N){
-    for(int i = 0; i < N; i++){
+    for(int i = 1; i < N; i++){
         if((rand() % 10) == 0){ // 1 in 10 of changing direction
             if((rand() % 2) == 0){// 1 in 2 of being left/right
                 turnLeft(letters[i]);
@@ -262,7 +278,7 @@ bool atEdge(letter let, int height, int width){
 }
 
 void edgeCheck(letter* letters, int N, int height, int width){
-    for(int i = 0; i < N; i++){
+    for(int i = 1; i < N; i++){
         if(atEdge(letters[i], height, width)){
             turnBack(letters[i]);
         }
