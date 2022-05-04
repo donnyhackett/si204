@@ -21,7 +21,6 @@ int main(){
     b->spawns = NULL;
     b->walls = NULL;
     b->next = NULL;
-    board* curr = b;
     ifstream finstart("gameScript.txt");
     while(finstart >> file >> numstar >> numkiller >> temp >> temp >> points){
         ifstream fin(file);
@@ -29,51 +28,51 @@ int main(){
             cout << "File '" << file << "' not found!" << endl;
             return 0;
         }
-        board* temp = new board;
         int rows, cols;
-        temp->goals = NULL;
-        temp->players = NULL;
-        temp->spawns = NULL;
-        temp->walls = NULL;
-        temp->next = NULL;
-        temp->numstar = numstar;
-        temp->numkiller = numkiller;
-        temp->points = points;
-        readBoard(fin, rows, cols, temp);
-        curr->next = temp;
-        curr = curr->next;
+        cerr << "ran" << endl;
+        if(b->next-> == NULL){
+            cerr << "first time" << endl;
+            readBoard(fin, rows, cols, b);
+            continue;
+        }
+        board* temp = b;
+        while(temp->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = new board;
+        temp->next->goals = NULL;
+        temp->next->players = NULL;
+        temp->next->spawns = NULL;
+        temp->next->walls = NULL;
+        temp->next->next = NULL;
+        readBoard(fin, rows, cols, temp->next);
     }
-    
-    board* currentboard = curr;
+
+    cerr << "num boards: " << lengthBoard(b) << endl;
+    return 0;
+    board* currentboard = b;
     // Initialize ncurses
     startCurses();
+    bool passed = true;
     while(deaths < 3)
     {
         if(currentboard != NULL){    
             printBoard(currentboard);
-            bool passed = false;
             // Loop forever until user enters 'q'
             char c;
             int steps = 0;
-            if(!passed){        //creates linked lists
+            if(passed){        //creates linked lists
                 spawnStars(currentboard);
                 spawnKillers(currentboard);
             }
-            cerr << endl;
-            cerr << "after inside loop: " << endl;
-            cerr << "goals: " << lengthGoal(currentboard->goals) << endl;
-            cerr << "players: " << lengthPlayer(currentboard->players) << endl;
-            cerr << "stars: " << lengthStar(currentboard->stars) << endl;
-            cerr << "walls: " << lengthWall(currentboard->walls) << endl;
-            cerr << endl;
             do { 
                 refreshWindow();
                 c = inputChar();
                 usleep(150000);
-                resetAll(currentboard);
                 eraseAll(currentboard);
                 playerCmd(currentboard->players, c);
                 if(steps == 0){
+                    resetAll(currentboard);
                     firstStarCmd(currentboard->stars);
                     firstKillerCmd(currentboard->killers);
                 }
@@ -84,25 +83,26 @@ int main(){
                 edgeCheck(currentboard);
                 moveChars(currentboard);
                 drawAll(currentboard);
-                cerr << "got here" << endl;
                 if(checkEnd(currentboard, passed)){ 
                     break; 
                 }
                 steps++;
                 if(c == 'y'){
-                    deaths = 4; 
+                    deaths = 3; 
                     break;          // game exits with a 'y'
                 } 
-                cerr << "got after check end" << endl;
             } while (true);
             if(passed){
                 scoretot += currentboard->points;
                 currentboard = currentboard->next;
             }
+            else{
+                deaths++;
+            }
             scoretot += 500 - steps;
         }
         else{
-            deaths = 4;
+            deaths = 3;
             cout << "You Won!" << endl;
         }
         

@@ -15,8 +15,8 @@ void addFront(string in, int value, word* &curr){
 }
 
 void removeNode(word* &w){
-    word* temp = w->before->before->before;
-    w->before->before = temp;
+    word* temp = w->;
+    w-> = temp;
 }
 
 int length(word *w){

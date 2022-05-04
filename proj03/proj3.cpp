@@ -113,6 +113,15 @@ int lengthWall(wall* w){
     }
 }
 
+int lengthBoard(board* w){
+    if(w == NULL){
+        return 0;
+    }
+    else{
+        return 1 + lengthBoard(w->next);
+    }
+}
+
 void addBackSpawn(spawn* &walls, int row, int col, char c){
     if(walls == NULL){
         walls = new spawn;
@@ -814,6 +823,7 @@ void drawAll(board* b){
     drawPlayers(b->players);
     drawStars(b->stars);
     drawKillers(b->killers);
+    drawGoals(b->goals);
 }
 
 void drawPlayers(player* p){
@@ -838,6 +848,14 @@ void drawKillers(killer* s){
     }
     drawChar(s->c, s->row, s->col);
     drawKillers(s->next);
+}
+
+void drawGoals(goal* s){
+    if(s == NULL){
+        return;
+    }
+    drawChar(s->c, s->row, s->col);
+    drawGoals(s->next);
 }
 
 void eraseAll(board* b){
@@ -875,13 +893,7 @@ bool checkEnd(board* b, bool &passed){
         passed = false;
         return true;
     }
-    cerr << "got after playercollide" << endl;
-    cerr << "goals: " << lengthGoal(b->goals) << endl;
-    cerr << "players: " << lengthPlayer(b->players) << endl;
-    cerr << "stars: " << lengthStar(b->stars) << endl;
-    cerr << "walls: " << lengthWall(b->walls) << endl;
     if((abs(b->goals->col - b->players->col) <= 1) && (abs(b->goals->row - b->players->row) <= 1)){
-        cerr << "got inside loop" << endl;
         passed = true;
         return true;
     }
@@ -891,6 +903,7 @@ bool checkEnd(board* b, bool &passed){
 void spawnStars(board* b){
     spawn* s = b->spawns;
     while(s != NULL){
+        cerr << "numstar = " << b->numstar << endl;
         for(int i = 0; i < b->numstar; i++){
             addBackStar(b->stars, s->row, s->col, '*');
         }
@@ -901,6 +914,7 @@ void spawnStars(board* b){
 void spawnKillers(board* b){
     spawn* s = b->spawns;
     while(s != NULL){
+        cerr << "numkiller = " << b->numkiller << endl;
         for(int i = 0; i < b->numkiller; i++){
             addBackKiller(b->killers, s->row, s->col, 'K');
         }
