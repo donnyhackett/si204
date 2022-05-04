@@ -7,6 +7,9 @@
 using namespace std;
 
 int main(){
+    //seed random
+    srand(time(0));
+
     string file;
     cout << "board file: ";
     cin >> file;
@@ -29,45 +32,39 @@ int main(){
 
     printBoard(b);
 
-    /*
-    // Draw 4 digit characters to the terminal screen.
-    drawChar('A', 0, 0);
-    refreshWindow();
-    usleep(800000);
-
-    drawChar('B', 20, 30);
-    refreshWindow();
-    usleep(800000);
-
-    drawChar('C', 20, 31);
-    refreshWindow();
-    usleep(800000);
-
-    drawChar('D', 15, 50);
-    refreshWindow();
-    */
-    cerr << "rows: " << rows << endl;
-    cerr << "cols: " << cols << endl;
-    cerr << "goal length: " << lengthGoal(b.goals) << endl;
-    cerr << "player length: " << lengthPlayer(b.players) << endl;
-    cerr << "spawn length: " << lengthSpawn(b.spawns) << endl;
-    cerr << "wall length: " << lengthWall(b.walls) << endl;
-
     // Loop forever until user enters 'q'
     char c;
+    int steps = 0;
+    spawnStars(b);
     do { 
-        usleep(150000);
-        
+        refreshWindow();
         c = inputChar();
+        usleep(150000);
+        eraseAll(b);
+        playerCmd(b.players, c);
+        if(steps == 0){
+            firstStarCmd(b.stars);
+        }
+        else{
+            starCmd(b.stars);
+        }
+        edgeCheck(b);
+        moveChars(b);
+        drawAll(b);
+        if(checkEnd(b)){ 
+            break; 
+        }
+        steps++;
         if(c == 'y') break; // game exits with a 'y'
     } while (true);
 
     // Close ncurses
     endCurses();
 
-    cout << "Player start: (" << b.players->row << "," << b.players->col << ")" << endl;
+    cout << "Player start: (" << b.players->startrow << "," << b.players->startcol << ")" << endl;
     cout << "Spawn spots:";
     printSpawnLocs(b.spawns);
+    cout << "Player score: " << 500 - steps << endl;
 
     return 0;
 }
